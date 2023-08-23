@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Контактная форма</title>
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    background-image: url('/img/fone-stena.jpg');
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+  }
+
+  #contactForm {
+    background-color: #fff;
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    width: 320px;
+  }
+
+  #contactForm label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+  }
+
+  #contactForm input,
+  #contactForm textarea {
+    width: 100%;
+    padding: 8px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    resize: vertical;
+  }
+
+  #contactForm button {
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    padding: 10px 20px;
+    cursor: pointer;
+  }
+
+  #contactForm button:hover {
+    background-color: #0056b3;
+  }
+</style>
+</head>
+<body>
+  <form id="contactForm">
+    <div>
+      <label for="name">Имя:</label>
+      <input type="text" id="name" required>
+    </div>
+    <div>
+      <label for="city">Город:</label>
+      <input type="text" id="city" required>
+    </div>
+    <div>
+      <label for="email">E-mail:</label>
+      <input type="email" id="email" required>
+    </div>
+    <div>
+      <label for="question">Вопрос:</label>
+      <textarea id="question" required></textarea>
+    </div>
+    <button type="submit">Отправить</button>
+  </form>
+
+  <script>
+  const contactForm = document.getElementById('contactForm');
+
+    contactForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+
+      const formData = new FormData(contactForm);
+
+      // Замените 'YOUR_BOT_TOKEN' на токен вашего бота
+      const botToken = '6566893636:AAET3VEuZ51d-VbUiRmhfPmsAT-_2gdmJ-E';
+
+      // Замените 'YOUR_CHAT_ID' на chat_id вашего чата
+      const chatId = '@DveriKub_test_bot (https://t.me/DveriKub_test_bot)';
+
+      const message = `
+        Имя: ${formData.get('name')}
+        Город: ${formData.get('city')}
+        E-mail: ${formData.get('email')}
+        Вопрос: ${formData.get('question')}
+      `;
+
+      const response = await fetch(`https://api.telegram.org/bot${botToken}/sendMessage`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          chat_id: chatId,
+          text: message,
+        }),
+      });
+
+      if (response.ok) {
+        alert('Сообщение успешно отправлено в Telegram');
+        contactForm.reset();
+      } else {
+        alert('Ошибка при отправке сообщения');
+      }
+    });
+  </script>
+</body>
+</html>
